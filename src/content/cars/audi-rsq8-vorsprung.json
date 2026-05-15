@@ -1,0 +1,24 @@
+{
+  "make": "Audi",
+  "model": "RSQ8",
+  "variant": "4.0 TFSI V8 Performance Carbon Vorsprung Tiptronic Quattro",
+  "year": "2026 (75 plate)",
+  "price": 142000,
+  "priceQualifier": "inc-vat",
+  "bodyType": "SUV",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "3,996 cc",
+  "ulez": true,
+  "status": "sourcing",
+  "badge": "Sourcing to order",
+  "featured": true,
+  "description": "The RSQ8 in full Performance Carbon Vorsprung specification, the flagship of Audi's SUV range. We can source this exact specification to order through our nationwide network. Talk to us about colour, options and delivery timescales.",
+  "images": [
+    "/cars/audi-rsq8-vorsprung/1.jpg",
+    "/cars/audi-rsq8-vorsprung/2.jpg",
+    "/cars/audi-rsq8-vorsprung/3.jpg",
+    "/cars/audi-rsq8-vorsprung/4.jpg"
+  ]
+}

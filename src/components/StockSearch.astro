@@ -1,0 +1,67 @@
+---
+/**
+ * Stock search bar. Native GET form: submitting navigates to
+ * /stock?make=...&body=...&maxprice=... and the stock page applies the filters.
+ */
+import { getCollection } from 'astro:content';
+import Icon from './Icon.astro';
+
+const cars = await getCollection('cars');
+const makes = [...new Set(cars.map((c) => c.data.make))].sort();
+const bodies = [...new Set(cars.map((c) => c.data.bodyType))].sort();
+const maxPrice = Math.max(...cars.map((c) => c.data.price));
+
+// Shared price brackets, also used by the stock page filter.
+export const PRICE_BRACKETS = [25000, 50000, 75000, 100000, 150000, 200000];
+const brackets = PRICE_BRACKETS.filter((b) => b < maxPrice);
+---
+
+<form class="stock-search surface p-4 md:p-5" action="/stock" method="get">
+  <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_auto]">
+    <div>
+      <label class="field-label" for="hs-make">Make</label>
+      <select id="hs-make" name="make" class="field">
+        <option value="">Any make</option>
+        {makes.map((m) => <option value={m}>{m}</option>)}
+      </select>
+    </div>
+    <div>
+      <label class="field-label" for="hs-body">Body type</label>
+      <select id="hs-body" name="body" class="field">
+        <option value="">Any body type</option>
+        {bodies.map((b) => <option value={b}>{b}</option>)}
+      </select>
+    </div>
+    <div>
+      <label class="field-label" for="hs-maxprice">Max price</label>
+      <select id="hs-maxprice" name="maxprice" class="field">
+        <option value="">No maximum</option>
+        {
+          brackets.map((b) => (
+            <option value={b}>{`Up to £${b.toLocaleString('en-GB')}`}</option>
+          ))
+        }
+      </select>
+    </div>
+    <div class="flex items-end">
+      <button type="submit" class="btn btn-accent w-full lg:px-8">
+        <Icon name="search" size={16} /> Search
+      </button>
+    </div>
+  </div>
+</form>
+
+<script>
+  // Drop empty selects on submit so the /stock URL stays clean.
+  document
+    .querySelectorAll<HTMLFormElement>('form.stock-search')
+    .forEach((form) => {
+      form.addEventListener('submit', () => {
+        form
+          .querySelectorAll<HTMLSelectElement>('select')
+          .forEach((s) => {
+            if (!s.value) s.disabled = true;
+          });
+      });
+    });
+</script>

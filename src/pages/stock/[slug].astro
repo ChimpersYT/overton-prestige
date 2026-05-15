@@ -1,0 +1,230 @@
+---
+import { getCollection } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import Layout from '../../layouts/Layout.astro';
+import CarGallery from '../../components/CarGallery.astro';
+import CarCard from '../../components/CarCard.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../data/site';
+import {
+  formatPrice,
+  priceQualifierLabel,
+  formatMileage,
+  carTitle,
+  carFullTitle,
+  statusLabel,
+  sortCars,
+} from '../../lib/format';
+
+export const getStaticPaths = (async () => {
+  const cars = await getCollection('cars');
+  return cars.map((car) => ({
+    params: { slug: car.id },
+    props: { car },
+  }));
+}) satisfies GetStaticPaths;
+
+const { car } = Astro.props;
+const d = car.data;
+
+const allCars = await getCollection('cars');
+const others = sortCars(allCars.filter((c) => c.id !== car.id)).slice(0, 3);
+
+const isSourcing = d.status === 'sourcing';
+const qualifier = priceQualifierLabel(d.priceQualifier);
+const title = carTitle(d);
+const fullTitle = carFullTitle(d);
+
+const specs = [
+  { icon: 'calendar', label: 'Registration', value: d.year },
+  { icon: 'gauge', label: 'Mileage', value: formatMileage(d.mileage) },
+  { icon: 'cog', label: 'Transmission', value: d.transmission },
+  { icon: 'fuel', label: 'Fuel', value: d.fuel },
+  ...(d.engineSize
+    ? [{ icon: 'zap', label: 'Engine', value: d.engineSize }]
+    : []),
+  { icon: 'car', label: 'Body type', value: d.bodyType },
+];
+
+const enquiryBody =
+  `Hi, I'm interested in the ${title} (${d.year}) listed at ` +
+  `${formatPrice(d.price)}. Please could you send me more details.`;
+const mailtoHref =
+  `mailto:${site.email}` +
+  `?subject=${encodeURIComponent('Enquiry: ' + fullTitle)}` +
+  `&body=${encodeURIComponent(enquiryBody)}`;
+const whatsappHref = `${site.whatsappHref}?text=${encodeURIComponent(enquiryBody)}`;
+---
+
+<Layout
+  title={fullTitle}
+  description={d.description ?? `${fullTitle} at Overton Prestige, Derby.`}
+>
+  <div class="shell pt-6">
+    <nav
+      class="flex items-center gap-2 text-sm text-fog"
+      aria-label="Breadcrumb"
+    >
+      <a href="/" class="hover:text-snow transition-colors">Home</a>
+      <Icon name="chevron-right" size={14} />
+      <a href="/stock" class="hover:text-snow transition-colors">Stock</a>
+      <Icon name="chevron-right" size={14} />
+      <span class="text-mist truncate">{title}</span>
+    </nav>
+  </div>
+
+  <section class="shell pt-6 pb-16 md:pb-24">
+    <div class="grid lg:grid-cols-[1.55fr_1fr] gap-8 lg:gap-12 items-start">
+      {/* LEFT COLUMN */}
+      <div>
+        <div class="flex flex-wrap items-center gap-3">
+          <span
+            class:list={[
+              'inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.7rem] font-display font-semibold tracking-wide border',
+              isSourcing
+                ? 'text-mist border-line bg-ink-200'
+                : 'bg-accent text-white border-accent',
+            ]}
+          >
+            {!isSourcing && <span class="w-1.5 h-1.5 rounded-full bg-white" />}
+            {statusLabel(d.status)}
+          </span>
+          {
+            d.ulez && (
+              <span class="inline-flex items-center gap-1.5 text-xs text-mist">
+                <Icon name="shield-check" size={14} class="text-accent" />
+                ULEZ compliant
+              </span>
+            )
+          }
+        </div>
+
+        <h1
+          class="mt-4 font-display text-3xl md:text-4xl font-bold text-snow leading-[1.08]"
+        >
+          {title}
+        </h1>
+        <p class="mt-2 text-mist">{d.variant}</p>
+
+        <div class="mt-6">
+          <CarGallery car={d} />
+        </div>
+
+        <div class="mt-10">
+          <h2 class="font-display text-xl font-semibold text-snow">
+            Specification
+          </h2>
+          <dl class="mt-4 grid sm:grid-cols-2 gap-3">
+            {
+              specs.map((s) => (
+                <div class="surface p-4 flex items-center gap-3">
+                  <div class="grid place-items-center w-9 h-9 rounded-md bg-ink-200 text-accent shrink-0">
+                    <Icon name={s.icon} size={16} />
+                  </div>
+                  <div>
+                    <dt class="text-xs text-fog">{s.label}</dt>
+                    <dd class="text-sm text-snow font-medium">{s.value}</dd>
+                  </div>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+
+        {
+          d.description && (
+            <div class="mt-10">
+              <h2 class="font-display text-xl font-semibold text-snow">
+                About this {title}
+              </h2>
+              <p class="mt-3 text-mist leading-relaxed">{d.description}</p>
+            </div>
+          )
+        }
+
+        <div class="mt-8 surface p-5 flex gap-3 text-sm text-fog">
+          <Icon
+            name="shield-check"
+            size={18}
+            class="text-accent shrink-0 mt-0.5"
+          />
+          <p>
+            Every vehicle is described as honestly as we can. For a full
+            specification, service history or a walkaround video, just ask. We
+            are happy to talk you through it before you visit.
+          </p>
+        </div>
+      </div>
+
+      {/* RIGHT COLUMN: sticky enquiry */}
+      <aside class="lg:sticky lg:top-28">
+        <div class="surface p-6">
+          <div class="flex items-baseline justify-between gap-3">
+            <span class="block font-display text-3xl font-bold text-snow">
+              {formatPrice(d.price)}
+            </span>
+            {qualifier && <span class="text-sm text-fog">{qualifier}</span>}
+          </div>
+          <p class="mt-1 text-sm text-fog">
+            {title} &middot; {d.year}
+          </p>
+
+          <div class="mt-5 pt-5 border-t border-line flex flex-col gap-2.5">
+            <a href={site.phoneHref} class="btn btn-accent w-full">
+              <Icon name="phone" size={16} /> Call {site.phone}
+            </a>
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener"
+              class="btn btn-outline w-full"
+            >
+              <Icon name="whatsapp" size={16} /> WhatsApp enquiry
+            </a>
+            <a href={mailtoHref} class="btn btn-ghost w-full justify-center">
+              <Icon name="mail" size={16} /> Email about this car
+            </a>
+          </div>
+
+          <div class="mt-5 pt-5 border-t border-line grid gap-3 text-sm">
+            <a
+              href="/finance"
+              class="flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="banknote" size={16} class="text-accent shrink-0" />
+              Finance available, ask for a quote
+            </a>
+            <a
+              href="/sell-your-car"
+              class="flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="car" size={16} class="text-accent shrink-0" />
+              Part-exchange always welcome
+            </a>
+          </div>
+        </div>
+        <p class="mt-3 text-xs text-fog text-center">
+          Viewings by appointment at our Hilton, Derby showroom.
+        </p>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section border-t border-line">
+    <div class="shell">
+      <div class="flex items-center justify-between gap-4">
+        <h2
+          class="font-display text-2xl md:text-3xl font-semibold text-snow"
+        >
+          More from our stock
+        </h2>
+        <a href="/stock" class="btn btn-outline btn-sm shrink-0">
+          All stock <Icon name="arrow-right" size={15} />
+        </a>
+      </div>
+      <div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {others.map((c) => <CarCard car={c} />)}
+      </div>
+    </div>
+  </section>
+</Layout>

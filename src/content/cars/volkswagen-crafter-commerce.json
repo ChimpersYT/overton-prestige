@@ -1,0 +1,23 @@
+{
+  "make": "Volkswagen",
+  "model": "Crafter",
+  "variant": "2.0 TDI CR35 Commerce Plus Panel Van",
+  "year": "2026 (75 plate)",
+  "price": 34000,
+  "priceQualifier": "plus-vat",
+  "bodyType": "Van",
+  "fuel": "Diesel",
+  "transmission": "Manual",
+  "mileage": 30,
+  "engineSize": "1,968 cc",
+  "ulez": false,
+  "status": "sourcing",
+  "badge": "Sourcing, all vans",
+  "description": "The Volkswagen Crafter CR35 in Commerce Plus specification, a hard-working long-wheelbase panel van. We can source vans of all types to order. Tell us your requirement and we will find the right vehicle.",
+  "images": [
+    "/cars/volkswagen-crafter-commerce/1.jpg",
+    "/cars/volkswagen-crafter-commerce/2.jpg",
+    "/cars/volkswagen-crafter-commerce/3.jpg",
+    "/cars/volkswagen-crafter-commerce/4.jpg"
+  ]
+}

@@ -1,0 +1,271 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHeader from '../../components/PageHeader.astro';
+import CarCard from '../../components/CarCard.astro';
+import Icon from '../../components/Icon.astro';
+import { site } from '../../data/site';
+import { sortCars } from '../../lib/format';
+
+const allCars = await getCollection('cars');
+const cars = sortCars(allCars);
+
+const makes = [...new Set(cars.map((c) => c.data.make))].sort();
+const bodies = [...new Set(cars.map((c) => c.data.bodyType))].sort();
+
+const maxPrice = Math.max(...cars.map((c) => c.data.price));
+const priceBrackets = [25000, 50000, 75000, 100000, 150000, 200000].filter(
+  (b) => b < maxPrice,
+);
+
+const statusOptions = [
+  { value: 'available', label: 'In stock now' },
+  { value: 'sourcing', label: 'Available to source' },
+];
+---
+
+<Layout
+  title="Stock"
+  description="Browse the current Overton Prestige stock list. Prestige and performance cars in Derby, with nationwide sourcing on anything we do not hold."
+>
+  <PageHeader
+    eyebrow="Current stock"
+    title="Every car we have, in one place"
+    lead={`${cars.length} prestige and performance vehicles. If what you want is not here, we will source it.`}
+  />
+
+  <section class="section">
+    <div class="shell">
+      {/* Filter bar */}
+      <div class="surface p-4 md:p-5">
+        <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <div>
+            <label class="field-label" for="f-make">Make</label>
+            <select id="f-make" class="field">
+              <option value="">All makes</option>
+              {makes.map((m) => <option value={m}>{m}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="f-body">Body type</label>
+            <select id="f-body" class="field">
+              <option value="">All body types</option>
+              {bodies.map((b) => <option value={b}>{b}</option>)}
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="f-maxprice">Max price</label>
+            <select id="f-maxprice" class="field">
+              <option value="">No maximum</option>
+              {
+                priceBrackets.map((b) => (
+                  <option value={b}>{`Up to £${b.toLocaleString('en-GB')}`}</option>
+                ))
+              }
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="f-status">Availability</label>
+            <select id="f-status" class="field">
+              <option value="">In stock &amp; sourcing</option>
+              {
+                statusOptions.map((s) => (
+                  <option value={s.value}>{s.label}</option>
+                ))
+              }
+            </select>
+          </div>
+          <div>
+            <label class="field-label" for="f-sort">Sort by</label>
+            <select id="f-sort" class="field">
+              <option value="price-desc">Price, high to low</option>
+              <option value="price-asc">Price, low to high</option>
+              <option value="make">Make, A to Z</option>
+            </select>
+          </div>
+        </div>
+        <div
+          class="mt-4 pt-4 border-t border-line flex items-center justify-between gap-4"
+        >
+          <p id="result-count" class="text-sm text-mist font-medium">
+            {cars.length} vehicles
+          </p>
+          <button
+            id="reset-filters"
+            type="button"
+            class="text-sm text-fog hover:text-snow transition-colors inline-flex items-center gap-1.5"
+          >
+            <Icon name="close" size={14} /> Clear filters
+          </button>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div
+        id="stock-grid"
+        class="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5"
+      >
+        {
+          cars.map((car, i) => (
+            <div
+              class="car-item"
+              data-make={car.data.make}
+              data-body={car.data.bodyType}
+              data-status={car.data.status}
+              data-price={car.data.price}
+            >
+              <CarCard car={car} eager={i < 3} />
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Empty state */}
+      <div
+        id="empty-state"
+        hidden
+        class="mt-8 surface p-12 text-center flex flex-col items-center"
+      >
+        <div class="grid place-items-center w-12 h-12 rounded-full bg-ink-200 text-fog">
+          <Icon name="search" size={22} />
+        </div>
+        <h2 class="mt-5 font-display text-xl font-semibold text-snow">
+          Nothing matches those filters
+        </h2>
+        <p class="mt-2 text-mist max-w-sm">
+          Try widening your search, or let us source the exact car you are
+          after.
+        </p>
+        <div class="mt-6 flex flex-wrap justify-center gap-3">
+          <button id="empty-reset" type="button" class="btn btn-outline btn-sm">
+            Clear filters
+          </button>
+          <a href="/sourcing" class="btn btn-accent btn-sm">
+            Source a car <Icon name="arrow-right" size={15} />
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Sourcing callout */}
+  <section class="section pt-0">
+    <div class="shell">
+      <div
+        class="surface p-8 md:p-10 flex flex-col md:flex-row items-center gap-6 md:gap-10"
+      >
+        <div class="flex-1 text-center md:text-left">
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-snow text-balance">
+            Not seeing the one? We source to order.
+          </h2>
+          <p class="mt-2 text-mist max-w-xl">
+            Tell us the exact specification you want and we will find it through
+            our nationwide trade network.
+          </p>
+        </div>
+        <div class="flex flex-wrap justify-center gap-3 shrink-0">
+          <a href="/sourcing" class="btn btn-accent">
+            Start a search <Icon name="arrow-right" size={16} />
+          </a>
+          <a href={site.phoneHref} class="btn btn-outline">
+            <Icon name="phone" size={16} /> Call us
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const grid = document.getElementById('stock-grid');
+  const items = Array.from(
+    document.querySelectorAll<HTMLElement>('.car-item'),
+  );
+  const makeSel = document.getElementById('f-make') as HTMLSelectElement | null;
+  const bodySel = document.getElementById('f-body') as HTMLSelectElement | null;
+  const statusSel = document.getElementById(
+    'f-status',
+  ) as HTMLSelectElement | null;
+  const maxSel = document.getElementById(
+    'f-maxprice',
+  ) as HTMLSelectElement | null;
+  const sortSel = document.getElementById('f-sort') as HTMLSelectElement | null;
+  const countEl = document.getElementById('result-count');
+  const emptyEl = document.getElementById('empty-state');
+  const resetBtn = document.getElementById('reset-filters');
+  const emptyReset = document.getElementById('empty-reset');
+
+  if (
+    grid &&
+    makeSel &&
+    bodySel &&
+    statusSel &&
+    maxSel &&
+    sortSel &&
+    countEl &&
+    emptyEl
+  ) {
+    const apply = () => {
+      const make = makeSel.value;
+      const body = bodySel.value;
+      const status = statusSel.value;
+      const max = maxSel.value ? Number(maxSel.value) : Infinity;
+      let visible = 0;
+
+      for (const item of items) {
+        const show =
+          (!make || item.dataset.make === make) &&
+          (!body || item.dataset.body === body) &&
+          (!status || item.dataset.status === status) &&
+          Number(item.dataset.price) <= max;
+        item.hidden = !show;
+        if (show) visible++;
+      }
+
+      countEl.textContent =
+        visible === 1 ? '1 vehicle' : `${visible} vehicles`;
+      emptyEl.hidden = visible > 0;
+
+      const sorted = [...items].sort((a, b) => {
+        const pa = Number(a.dataset.price);
+        const pb = Number(b.dataset.price);
+        if (sortSel.value === 'price-asc') return pa - pb;
+        if (sortSel.value === 'make') {
+          return (
+            (a.dataset.make ?? '').localeCompare(b.dataset.make ?? '') ||
+            pb - pa
+          );
+        }
+        return pb - pa;
+      });
+      for (const item of sorted) grid.appendChild(item);
+    };
+
+    // Initialise from URL query params (e.g. /stock?make=Audi)
+    const params = new URLSearchParams(location.search);
+    const setIf = (sel: HTMLSelectElement, key: string) => {
+      const v = params.get(key);
+      if (v && [...sel.options].some((o) => o.value === v)) sel.value = v;
+    };
+    setIf(makeSel, 'make');
+    setIf(bodySel, 'body');
+    setIf(statusSel, 'status');
+    setIf(maxSel, 'maxprice');
+
+    const reset = () => {
+      makeSel.value = '';
+      bodySel.value = '';
+      statusSel.value = '';
+      maxSel.value = '';
+      sortSel.value = 'price-desc';
+      apply();
+    };
+
+    for (const el of [makeSel, bodySel, statusSel, maxSel, sortSel]) {
+      el.addEventListener('change', apply);
+    }
+    resetBtn?.addEventListener('click', reset);
+    emptyReset?.addEventListener('click', reset);
+    apply();
+  }
+</script>

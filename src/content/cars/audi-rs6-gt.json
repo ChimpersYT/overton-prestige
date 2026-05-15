@@ -1,0 +1,24 @@
+{
+  "make": "Audi",
+  "model": "RS6",
+  "variant": "GT 4.0 TFSI V8 Tiptronic Quattro Estate",
+  "year": "2025 (75 plate)",
+  "price": 189000,
+  "priceQualifier": "none",
+  "bodyType": "Estate",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "3,996 cc",
+  "ulez": true,
+  "status": "available",
+  "badge": "Special offer",
+  "featured": true,
+  "description": "A genuinely rare opportunity. The RS6 GT is the most focused and most collectible version of Audi's iconic super-estate, and we are pleased to offer one finished in Arkona White. Full specification, history and finance options available on request. Contact us to arrange a private viewing.",
+  "images": [
+    "/cars/audi-rs6-gt/1.jpg",
+    "/cars/audi-rs6-gt/2.jpg",
+    "/cars/audi-rs6-gt/3.jpg",
+    "/cars/audi-rs6-gt/4.jpg"
+  ]
+}

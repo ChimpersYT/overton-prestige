@@ -1,0 +1,99 @@
+---
+import type { CarData } from '../lib/format';
+import CarMedia from './CarMedia.astro';
+
+interface Props {
+  car: CarData;
+}
+const { car } = Astro.props;
+const images = car.images;
+const alt = `${car.make} ${car.model} ${car.variant}`;
+const hasImages = images.length > 0;
+---
+
+{
+  hasImages ? (
+    <div class="car-gallery">
+      <div class="relative surface overflow-hidden aspect-[16/10]">
+        <img
+          class="gallery-main w-full h-full object-cover"
+          src={images[0]}
+          alt={alt}
+          fetchpriority="high"
+        />
+        {car.badge && (
+          <span class="absolute top-4 left-4 inline-flex items-center rounded-md bg-ink/80 backdrop-blur px-3 py-1.5 text-xs font-display font-semibold tracking-wide text-snow border border-line">
+            {car.badge}
+          </span>
+        )}
+      </div>
+      {images.length > 1 && (
+        <div class="mt-3 grid grid-cols-4 gap-3">
+          {images.map((src, i) => (
+            <button
+              type="button"
+              class:list={[
+                'gallery-thumb relative surface overflow-hidden aspect-[16/10]',
+                i === 0 && 'is-active',
+              ]}
+              data-src={src}
+              aria-label={`View photo ${i + 1}`}
+            >
+              <img
+                src={src}
+                alt=""
+                class="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  ) : (
+    <div class="relative surface overflow-hidden aspect-[16/10]">
+      <CarMedia car={car} eager={true} class="w-full h-full" />
+      {car.badge && (
+        <span class="absolute top-4 left-4 inline-flex items-center rounded-md bg-ink/80 backdrop-blur px-3 py-1.5 text-xs font-display font-semibold tracking-wide text-snow border border-line">
+          {car.badge}
+        </span>
+      )}
+    </div>
+  )
+}
+
+<script>
+  document
+    .querySelectorAll<HTMLElement>('.car-gallery')
+    .forEach((gallery) => {
+      const main = gallery.querySelector<HTMLImageElement>('.gallery-main');
+      const thumbs =
+        gallery.querySelectorAll<HTMLButtonElement>('.gallery-thumb');
+      thumbs.forEach((thumb) => {
+        thumb.addEventListener('click', () => {
+          const src = thumb.dataset.src;
+          if (src && main) main.src = src;
+          thumbs.forEach((t) =>
+            t.classList.toggle('is-active', t === thumb),
+          );
+        });
+      });
+    });
+</script>
+
+<style>
+  .gallery-thumb {
+    cursor: pointer;
+    opacity: 0.55;
+    transition:
+      opacity 0.18s ease,
+      border-color 0.18s ease;
+  }
+  .gallery-thumb:hover {
+    opacity: 0.85;
+  }
+  .gallery-thumb.is-active {
+    opacity: 1;
+    border-color: var(--color-accent);
+  }
+</style>

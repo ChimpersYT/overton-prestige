@@ -1,0 +1,24 @@
+{
+  "make": "Audi",
+  "model": "SQ7",
+  "variant": "4.0 TFSI V8 Black Edition Tiptronic Quattro",
+  "year": "2026 (75 plate)",
+  "price": 86000,
+  "priceQualifier": "none",
+  "bodyType": "SUV",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "3,996 cc",
+  "ulez": true,
+  "status": "available",
+  "badge": "Tech Pack Pro, panoramic roof",
+  "featured": true,
+  "description": "An imposing seven-seat performance SUV in Black Edition trim, fitted with the Tech Pack Pro and a panoramic roof. The 4.0 TFSI V8 makes this one of the most complete cars in its class. Available now, viewing by appointment.",
+  "images": [
+    "/cars/audi-sq7-black-edition/1.jpg",
+    "/cars/audi-sq7-black-edition/2.jpg",
+    "/cars/audi-sq7-black-edition/3.jpg",
+    "/cars/audi-sq7-black-edition/4.jpg"
+  ]
+}

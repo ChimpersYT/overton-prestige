@@ -1,0 +1,173 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const steps = [
+  {
+    icon: 'car',
+    title: 'Tell us about your car',
+    body: 'Send the registration, mileage and a few details. Photos help, but are not essential to start.',
+  },
+  {
+    icon: 'banknote',
+    title: 'We value it',
+    body: 'We give you a fair, honest figure based on the car and the current market, with no pressure.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Sell or part-exchange',
+    body: 'Take the money for your car outright, or put its value towards your next one from us.',
+  },
+];
+
+const reasons = [
+  'A fair price based on the real market, not a lowball offer',
+  'No obligation, and no pushy sales follow-up',
+  'Outstanding finance on your current car handled for you',
+  'Part-exchange against anything in our stock, or a car we source',
+  'A quick, straightforward process with people who know the cars',
+];
+---
+
+<Layout
+  title="Sell Your Car"
+  description="Sell your car to Overton Prestige or part-exchange it against your next one. A fair, honest valuation with no obligation."
+>
+  <PageHeader
+    eyebrow="Sell or part-exchange"
+    title="Sell your car to us, or part-exchange it"
+    lead="Whether you are buying from us or not, we will give you a fair and honest valuation. Part-exchange is always welcome against anything in our stock."
+  />
+
+  <section class="section">
+    <div class="shell">
+      <h2 class="font-display text-2xl md:text-3xl font-semibold text-snow">
+        How it works
+      </h2>
+      <div class="mt-8 grid sm:grid-cols-3 gap-5">
+        {
+          steps.map((step, i) => (
+            <div class="surface p-6 reveal">
+              <div class="flex items-center justify-between">
+                <div class="grid place-items-center w-11 h-11 rounded-lg bg-accent/12 text-accent">
+                  <Icon name={step.icon} size={20} />
+                </div>
+                <span class="font-display text-sm font-bold text-ink-300">
+                  0{i + 1}
+                </span>
+              </div>
+              <h3 class="mt-5 font-display text-lg font-semibold text-snow">
+                {step.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog leading-relaxed">{step.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div
+        class="surface p-6 md:p-10 grid lg:grid-cols-[1fr_1.4fr] gap-10 lg:gap-16"
+      >
+        <div>
+          <span class="eyebrow">Why sell to us</span>
+          <h2
+            class="mt-4 font-display text-2xl md:text-3xl font-semibold text-snow text-balance"
+          >
+            Straightforward, and fair
+          </h2>
+          <ul class="mt-6 flex flex-col gap-3">
+            {
+              reasons.map((r) => (
+                <li class="flex items-start gap-2.5 text-sm text-mist">
+                  <Icon
+                    name="check"
+                    size={16}
+                    class="text-accent shrink-0 mt-0.5"
+                  />
+                  {r}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="mt-7 flex flex-col gap-2.5 text-sm">
+            <a
+              href={site.phoneHref}
+              class="inline-flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="phone" size={16} class="text-accent" />
+              {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              class="inline-flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="whatsapp" size={16} class="text-accent" />
+              Message us on WhatsApp
+            </a>
+          </div>
+        </div>
+        <div>
+          <h3 class="font-display text-xl font-semibold text-snow">
+            Get a valuation
+          </h3>
+          <p class="mt-2 text-sm text-fog">
+            Send us the details and we will come back to you with a figure.
+          </p>
+          <div class="mt-6">
+            <EnquiryForm
+              subject="Sell my car enquiry"
+              submitLabel="Request a valuation"
+              fields={[
+                { name: 'name', label: 'Your name', required: true },
+                {
+                  name: 'phone',
+                  label: 'Phone',
+                  type: 'tel',
+                  required: true,
+                },
+                { name: 'email', label: 'Email', type: 'email' },
+                {
+                  name: 'reg',
+                  label: 'Registration',
+                  placeholder: 'e.g. AB12 CDE',
+                  required: true,
+                },
+                {
+                  name: 'vehicle',
+                  label: 'Make and model',
+                  placeholder: 'e.g. Audi Q5 S Line',
+                  required: true,
+                },
+                {
+                  name: 'mileage',
+                  label: 'Mileage',
+                  placeholder: 'e.g. 24,000',
+                },
+                {
+                  name: 'condition',
+                  label: 'Condition',
+                  type: 'select',
+                  options: ['Excellent', 'Good', 'Average', 'Needs work'],
+                },
+                {
+                  name: 'details',
+                  label: 'Notes',
+                  type: 'textarea',
+                  placeholder:
+                    'Service history, MOT, any damage, outstanding finance...',
+                },
+              ]}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

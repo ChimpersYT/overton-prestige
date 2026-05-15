@@ -1,0 +1,124 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import EnquiryForm from '../components/EnquiryForm.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const useCases = [
+  {
+    icon: 'sparkles',
+    title: 'Special occasions',
+    body: 'Weddings, milestone birthdays and events where the car is part of the day.',
+  },
+  {
+    icon: 'handshake',
+    title: 'Business and corporate',
+    body: 'Make the right impression for client meetings, away days and important trips.',
+  },
+  {
+    icon: 'key',
+    title: 'Try before you buy',
+    body: 'Spend real time with a model you are considering before committing to it.',
+  },
+];
+---
+
+<Layout
+  title="Short-Term Rentals"
+  description="Hire a prestige or performance car from Overton Prestige in Derby for events, business trips, or to try before you buy."
+>
+  <PageHeader
+    eyebrow="Short-term rentals"
+    title="Prestige cars, available to hire"
+    lead="From a weekend behind the wheel of something special to a car that makes the right impression for business, our short-term rentals put a prestige vehicle on your driveway without the commitment of owning one."
+  />
+
+  <section class="section">
+    <div class="shell">
+      <h2 class="font-display text-2xl md:text-3xl font-semibold text-snow">
+        When a rental makes sense
+      </h2>
+      <div class="mt-8 grid sm:grid-cols-3 gap-5">
+        {
+          useCases.map((u) => (
+            <div class="surface p-6 reveal">
+              <div class="grid place-items-center w-11 h-11 rounded-lg bg-accent/12 text-accent">
+                <Icon name={u.icon} size={20} />
+              </div>
+              <h3 class="mt-5 font-display text-lg font-semibold text-snow">
+                {u.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog leading-relaxed">{u.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div
+        class="surface p-6 md:p-10 grid lg:grid-cols-[1fr_1.3fr] gap-10 lg:gap-16"
+      >
+        <div>
+          <span class="eyebrow">Enquire</span>
+          <h2
+            class="mt-4 font-display text-2xl md:text-3xl font-semibold text-snow text-balance"
+          >
+            Check availability
+          </h2>
+          <p class="mt-4 text-mist leading-relaxed">
+            Tell us roughly when you need a car and what you have in mind. We
+            will confirm what is available and the rates, with no obligation.
+          </p>
+          <p class="mt-3 text-sm text-fog">
+            Rental terms, mileage and deposit are confirmed before booking.
+          </p>
+          <div class="mt-6 flex flex-col gap-2.5 text-sm">
+            <a
+              href={site.phoneHref}
+              class="inline-flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="phone" size={16} class="text-accent" />
+              {site.phone}
+            </a>
+            <a
+              href={site.whatsappHref}
+              class="inline-flex items-center gap-2.5 text-mist hover:text-snow transition-colors"
+            >
+              <Icon name="whatsapp" size={16} class="text-accent" />
+              Message us on WhatsApp
+            </a>
+          </div>
+        </div>
+        <EnquiryForm
+          subject="Short-term rental enquiry"
+          submitLabel="Send rental enquiry"
+          fields={[
+            { name: 'name', label: 'Your name', required: true },
+            { name: 'phone', label: 'Phone', type: 'tel', required: true },
+            { name: 'email', label: 'Email', type: 'email' },
+            {
+              name: 'vehicle',
+              label: 'Vehicle of interest',
+              placeholder: 'e.g. Audi RSQ8, or open to suggestions',
+            },
+            {
+              name: 'dates',
+              label: 'Dates needed',
+              placeholder: 'e.g. 12 to 15 June',
+            },
+            {
+              name: 'details',
+              label: 'Details',
+              type: 'textarea',
+              placeholder: 'Occasion, pick-up area, anything else we should know...',
+            },
+          ]}
+        />
+      </div>
+    </div>
+  </section>
+</Layout>

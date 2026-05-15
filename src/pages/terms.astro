@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="Terms of Use"
+  description="The terms that apply to use of the Overton Prestige website."
+>
+  <PageHeader eyebrow="Legal" title="Terms of Use" lead="Last updated: May 2026" />
+
+  <section class="section">
+    <div class="shell">
+      <div class="legal-content">
+        <p>
+          These terms apply to your use of the {site.name} website. By using the
+          site, you accept them.
+        </p>
+
+        <h2>Vehicle information</h2>
+        <p>
+          Vehicle details, specifications, prices and availability shown on this
+          site are provided in good faith and are intended as a guide only. They
+          may change, and a vehicle may be sold or reserved before the site is
+          updated. Nothing on this website is a contractual offer. Please confirm
+          the details of any vehicle with us directly before relying on them.
+        </p>
+
+        <h2>Pricing</h2>
+        <p>
+          Prices are subject to change. Where a vehicle's price is shown as
+          including or excluding VAT, that is indicated on the vehicle's listing.
+        </p>
+
+        <h2>Finance</h2>
+        <p>
+          Any finance referred to on this site is subject to status,
+          affordability and a credit check. Figures and eligibility are confirmed
+          in writing before any agreement is entered into.
+        </p>
+
+        <h2>Accuracy and liability</h2>
+        <p>
+          We take care to keep this website accurate and up to date, but we do
+          not warrant that it is free of errors or omissions. To the extent
+          permitted by law, we are not liable for any loss arising from reliance
+          on information on this site.
+        </p>
+
+        <h2>Intellectual property</h2>
+        <p>
+          The content, design and branding of this website belong to {site.name}
+          and may not be reproduced without permission.
+        </p>
+
+        <h2>External links</h2>
+        <p>
+          This site may link to other websites. We are not responsible for the
+          content or practices of those sites.
+        </p>
+
+        <h2>Governing law</h2>
+        <p>These terms are governed by the law of England and Wales.</p>
+
+        <h2>Contact</h2>
+        <p>
+          {site.name}<br />
+          {site.addressOneLine}<br />
+          <a href={`mailto:${site.email}`}>{site.email}</a> &middot; {site.phone}
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

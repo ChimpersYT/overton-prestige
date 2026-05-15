@@ -1,0 +1,37 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="Page not found"
+  description="The page you are looking for is not here. Try the stock list, or get in touch."
+>
+  <section class="section">
+    <div class="shell">
+      <div class="max-w-xl">
+        <span class="eyebrow">404</span>
+        <h1
+          class="mt-5 font-display text-4xl md:text-5xl font-bold text-snow leading-[1.04] text-balance"
+        >
+          That page got away from us
+        </h1>
+        <p class="mt-5 text-lg text-mist leading-relaxed">
+          The link you followed does not lead anywhere on this site. It may have
+          moved, or it may never have existed. Either way, here is the way
+          forward.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-3">
+          <a href="/stock" class="btn btn-accent">
+            View our stock <Icon name="arrow-right" size={16} />
+          </a>
+          <a href="/" class="btn btn-outline">Go to homepage</a>
+          <a href={site.phoneHref} class="btn btn-ghost">
+            <Icon name="phone" size={16} /> Call {site.phone}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

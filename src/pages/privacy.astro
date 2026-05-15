@@ -1,0 +1,114 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import { site } from '../data/site';
+---
+
+<Layout
+  title="Privacy Policy"
+  description="How Overton Prestige handles your personal information."
+>
+  <PageHeader eyebrow="Legal" title="Privacy Policy" lead="Last updated: May 2026" />
+
+  <section class="section">
+    <div class="shell">
+      <div class="legal-content">
+        <p>
+          This policy explains what information {site.name} collects when you use
+          this website, how we use it, and the rights you have. {site.name} is a
+          vehicle dealership based at {site.addressOneLine}.
+        </p>
+
+        <h2>What we collect</h2>
+        <ul>
+          <li>
+            <strong>Enquiry details.</strong> When you use one of our enquiry
+            forms, we collect the information you provide, typically your name,
+            phone number, email address and the details of your enquiry.
+          </li>
+          <li>
+            <strong>Usage data.</strong> We use Cloudflare Web Analytics to
+            understand how the site is used. It is privacy-friendly, does not use
+            cookies, and does not collect information that identifies you
+            personally.
+          </li>
+        </ul>
+
+        <h2>How we use it</h2>
+        <p>
+          We use the information you send us only to respond to your enquiry and
+          to provide the service or information you have asked for. We do not
+          sell your information, and we do not use it for marketing without your
+          consent.
+        </p>
+
+        <h2>Legal basis</h2>
+        <p>
+          Under UK data protection law, we process your enquiry details on the
+          basis of taking steps at your request before potentially entering into
+          a contract, and our legitimate interest in responding to people who
+          contact us.
+        </p>
+
+        <h2>Who we share it with</h2>
+        <ul>
+          <li>
+            <strong>Formspree</strong> processes our website form submissions and
+            forwards them to us.
+          </li>
+          <li>
+            <strong>Cloudflare</strong> hosts this website and provides the
+            privacy-friendly analytics described above.
+          </li>
+        </ul>
+        <p>
+          We do not share your information with anyone else unless we are
+          required to by law.
+        </p>
+
+        <h2>Cookies</h2>
+        <p>
+          This website does not set any cookies, and our analytics provider does
+          not use cookies either.
+        </p>
+
+        <h2>How long we keep it</h2>
+        <p>
+          We keep enquiry details only for as long as we need them to deal with
+          your enquiry and to keep reasonable records of our business activity,
+          after which they are deleted.
+        </p>
+
+        <h2>Your rights</h2>
+        <p>
+          You have the right to ask us for a copy of the information we hold
+          about you, to have it corrected or deleted, and to object to how we use
+          it. To make a request, contact us at
+          <a href={`mailto:${site.email}`}>{site.email}</a> or call {site.phone}.
+        </p>
+
+        <h2>Complaints</h2>
+        <p>
+          If you are unhappy with how we have handled your information, you can
+          complain to the Information Commissioner's Office at
+          <a href="https://ico.org.uk" target="_blank" rel="noopener"
+            >ico.org.uk</a
+          >.
+        </p>
+
+        <h2>Changes</h2>
+        <p>
+          We may update this policy from time to time. Any changes will be shown
+          on this page with a revised date.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          {site.name}<br />
+          {site.addressOneLine}<br />
+          <a href={`mailto:${site.email}`}>{site.email}</a> &middot; {site.phone}
+        </p>
+      </div>
+    </div>
+  </section>
+</Layout>

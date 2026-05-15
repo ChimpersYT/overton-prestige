@@ -1,0 +1,23 @@
+{
+  "make": "Audi",
+  "model": "RS3",
+  "variant": "Sportback 2.5 TFSI Carbon Vorsprung S Tronic Quattro",
+  "year": "2026 (26 plate)",
+  "price": 69900,
+  "priceQualifier": "inc-vat",
+  "bodyType": "Hatchback",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,480 cc",
+  "ulez": true,
+  "status": "sourcing",
+  "badge": "Sourcing, trade & retail",
+  "description": "The RS3 Sportback in Carbon Vorsprung specification, available to source for both trade and retail buyers. We hold strong supply relationships across the country and can locate this build quickly. Contact us to discuss.",
+  "images": [
+    "/cars/audi-rs3-sportback-vorsprung/1.jpg",
+    "/cars/audi-rs3-sportback-vorsprung/2.jpg",
+    "/cars/audi-rs3-sportback-vorsprung/3.jpg",
+    "/cars/audi-rs3-sportback-vorsprung/4.jpg"
+  ]
+}

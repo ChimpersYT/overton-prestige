@@ -1,0 +1,133 @@
+---
+import { site } from '../data/site';
+import Icon from './Icon.astro';
+import Logo from './Logo.astro';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-line bg-ink-100">
+  <div class="shell py-16 md:py-20">
+    <div class="grid gap-12 md:grid-cols-2 lg:grid-cols-12">
+      <div class="lg:col-span-4">
+        <Logo />
+        <p class="mt-5 text-sm text-fog max-w-xs leading-relaxed">
+          Prestige and performance car sales and vehicle sourcing in Derby. If
+          we do not have it in stock, we will find it for you.
+        </p>
+        {
+          site.socials.length > 0 && (
+            <div class="mt-6 flex items-center gap-3">
+              {site.socials.map((s) => (
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="grid place-items-center w-9 h-9 rounded-md surface text-mist hover:text-snow hover:border-line-strong transition-colors"
+                  aria-label={s.label}
+                >
+                  <Icon name={s.label.toLowerCase()} size={16} />
+                </a>
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <div class="lg:col-span-3">
+        <h4
+          class="font-display text-xs font-semibold tracking-[0.18em] uppercase text-fog"
+        >
+          Visit us
+        </h4>
+        <address class="mt-4 not-italic text-sm text-mist leading-relaxed">
+          {site.address.line1}<br />
+          {site.address.line2}<br />
+          {site.address.city}, {site.address.county}<br />
+          {site.address.postcode}
+        </address>
+        <div class="mt-4 flex flex-col gap-2 text-sm">
+          <a
+            href={site.phoneHref}
+            class="inline-flex items-center gap-2 text-mist hover:text-snow transition-colors"
+            ><Icon name="phone" size={15} /> {site.phone}</a
+          >
+          <a
+            href={`mailto:${site.email}`}
+            class="inline-flex items-center gap-2 text-mist hover:text-snow transition-colors"
+            ><Icon name="mail" size={15} /> {site.email}</a
+          >
+        </div>
+      </div>
+
+      <div class="lg:col-span-3">
+        <h4
+          class="font-display text-xs font-semibold tracking-[0.18em] uppercase text-fog"
+        >
+          Opening hours
+        </h4>
+        <ul class="mt-4 flex flex-col gap-1.5 text-sm">
+          {
+            site.hours.map((h) => (
+              <li class="flex justify-between gap-4">
+                <span class="text-fog">{h.day}</span>
+                <span class={h.time === 'Closed' ? 'text-fog' : 'text-mist'}>
+                  {h.time}
+                </span>
+              </li>
+            ))
+          }
+        </ul>
+        <p class="mt-3 text-xs text-accent">{site.hoursNote}</p>
+      </div>
+
+      <div class="lg:col-span-2">
+        <h4
+          class="font-display text-xs font-semibold tracking-[0.18em] uppercase text-fog"
+        >
+          Explore
+        </h4>
+        <ul class="mt-4 flex flex-col gap-2 text-sm">
+          <li>
+            <a href="/" class="text-mist hover:text-snow transition-colors"
+              >Home</a
+            >
+          </li>
+          {
+            site.nav.map((n) => (
+              <li>
+                <a
+                  href={n.href}
+                  class="text-mist hover:text-snow transition-colors"
+                >
+                  {n.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="border-t border-line">
+    <div
+      class="shell py-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-center sm:text-left"
+    >
+      <p class="text-xs text-fog">
+        &copy; {year}
+        {site.name}. All rights reserved.
+      </p>
+      <nav class="flex items-center gap-5 text-xs" aria-label="Legal">
+        <a
+          href="/privacy"
+          class="text-fog hover:text-snow transition-colors">Privacy Policy</a
+        >
+        <a
+          href="/terms"
+          class="text-fog hover:text-snow transition-colors">Terms of Use</a
+        >
+      </nav>
+    </div>
+  </div>
+</footer>

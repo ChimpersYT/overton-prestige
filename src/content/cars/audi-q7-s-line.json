@@ -1,0 +1,22 @@
+{
+  "make": "Audi",
+  "model": "Q7",
+  "variant": "3.0 TDI V6 45 S Line",
+  "year": "2026 (26 plate)",
+  "price": 70000,
+  "priceQualifier": "inc-vat",
+  "bodyType": "SUV",
+  "fuel": "Diesel",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,967 cc",
+  "ulez": false,
+  "status": "available",
+  "description": "A refined, spacious Q7 in 45 TDI S Line specification. Quiet, quick and exceptionally well equipped, this is luxury seven-seat transport done properly. Available now with finance options.",
+  "images": [
+    "/cars/audi-q7-s-line/1.jpg",
+    "/cars/audi-q7-s-line/2.jpg",
+    "/cars/audi-q7-s-line/3.jpg",
+    "/cars/audi-q7-s-line/4.jpg"
+  ]
+}

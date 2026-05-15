@@ -1,0 +1,23 @@
+{
+  "make": "Audi",
+  "model": "RS3",
+  "variant": "Saloon 2.5 TFSI Carbon Vorsprung S Tronic Quattro",
+  "year": "2026 (26 plate)",
+  "price": 71995,
+  "priceQualifier": "none",
+  "bodyType": "Saloon",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,480 cc",
+  "ulez": true,
+  "status": "sourcing",
+  "badge": "Sourcing, bucket seats",
+  "description": "The RS3 Saloon in Carbon Vorsprung specification with the sought-after bucket seats. We can source this exact build for you through our trade network. Tell us your preferred colour and options and we will do the rest.",
+  "images": [
+    "/cars/audi-rs3-saloon-vorsprung/1.jpg",
+    "/cars/audi-rs3-saloon-vorsprung/2.jpg",
+    "/cars/audi-rs3-saloon-vorsprung/3.jpg",
+    "/cars/audi-rs3-saloon-vorsprung/4.jpg"
+  ]
+}

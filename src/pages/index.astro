@@ -1,0 +1,422 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import CarCard from '../components/CarCard.astro';
+import CarMedia from '../components/CarMedia.astro';
+import Icon from '../components/Icon.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import StockSearch from '../components/StockSearch.astro';
+import { site } from '../data/site';
+import { sortCars, formatPrice, carTitle } from '../lib/format';
+
+const allCars = await getCollection('cars');
+const sorted = sortCars(allCars);
+const featured = sorted.filter((c) => c.data.featured).slice(0, 3);
+const hero = allCars.find((c) => c.id === 'audi-rs6-gt') ?? sorted[0];
+const heroD = hero.data;
+
+const sourcingSteps = [
+  {
+    icon: 'search',
+    title: 'Tell us the spec',
+    body: 'Make, model, options, colour and budget. The more detail the better.',
+  },
+  {
+    icon: 'handshake',
+    title: 'We locate it',
+    body: 'We search our nationwide network of trusted trade suppliers until we find the right car.',
+  },
+  {
+    icon: 'key',
+    title: 'Prepared and delivered',
+    body: 'Fully checked and presented, then handed over at the showroom or delivered to you.',
+  },
+];
+
+const services = [
+  {
+    icon: 'search',
+    title: 'Vehicle sourcing',
+    body: 'Cannot see what you want? We find it for you, anywhere in the UK.',
+    href: '/sourcing',
+  },
+  {
+    icon: 'banknote',
+    title: 'Finance',
+    body: 'PCP and Hire Purchase arranged on most vehicles, with no obligation.',
+    href: '/finance',
+  },
+  {
+    icon: 'car',
+    title: 'Sell or part-exchange',
+    body: 'A fair, fast valuation on your current car, whether you buy from us or not.',
+    href: '/sell-your-car',
+  },
+  {
+    icon: 'calendar',
+    title: 'Short-term rentals',
+    body: 'Prestige vehicles available to hire for events, trips and business.',
+    href: '/rentals',
+  },
+];
+
+const whyOverton = [
+  {
+    icon: 'handshake',
+    title: 'Sourced to order',
+    body: 'If it is not on the stock list, our nationwide network finds it.',
+  },
+  {
+    icon: 'star',
+    title: 'Genuinely rated',
+    body: `${site.reviews.rating} from ${site.reviews.total} reviews on Google and AutoTrader.`,
+  },
+  {
+    icon: 'shield-check',
+    title: 'Prepared properly',
+    body: 'Every car is checked, presented and described honestly before it is sold.',
+  },
+  {
+    icon: 'clock',
+    title: 'Private viewings',
+    body: 'Appointment-only, so every visit is unhurried and on your time.',
+  },
+];
+---
+
+<Layout>
+  {/* ---------------------------------------------------------------- HERO */}
+  <section class="relative overflow-hidden">
+    <div
+      class="pointer-events-none absolute -top-48 -right-40 w-[42rem] h-[42rem] rounded-full bg-accent/10 blur-[130px]"
+    >
+    </div>
+    <div class="shell relative pt-12 md:pt-20 pb-16 md:pb-24">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div>
+          <span class="eyebrow">Derby, Derbyshire</span>
+          <h1
+            class="mt-5 font-display text-[2.6rem] sm:text-5xl lg:text-[3.4rem] font-bold text-snow leading-[1.04] text-balance"
+          >
+            Quality prestige cars and vehicle sourcing specialists
+          </h1>
+          <p class="mt-5 text-lg text-mist max-w-xl leading-relaxed">
+            Overton Prestige sells quality prestige and performance vehicles
+            from our Derby showroom, and sources any other car you are after
+            through a nationwide network of trusted suppliers.
+          </p>
+          <div class="mt-8 flex flex-wrap items-center gap-3">
+            <a href="/stock" class="btn btn-accent">
+              View our stock <Icon name="arrow-right" size={17} />
+            </a>
+            <a href={site.phoneHref} class="btn btn-outline">
+              <Icon name="phone" size={16} />
+              {site.phone}
+            </a>
+          </div>
+          <div class="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div class="flex items-center gap-2.5">
+              <div class="flex gap-0.5 text-accent">
+                {Array.from({ length: 5 }).map(() => <Icon name="star" size={15} />)}
+              </div>
+              <span class="text-sm text-mist">
+                <span class="text-snow font-semibold">{site.reviews.rating}</span>
+                 from {site.reviews.total} reviews
+              </span>
+            </div>
+            <span class="hidden sm:block w-px h-4 bg-line"></span>
+            <span class="text-sm text-mist"
+              >Audi RS &amp; performance specialists</span
+            >
+          </div>
+        </div>
+
+        <div class="reveal">
+          <a
+            href={`/stock/${hero.id}`}
+            class="group block surface overflow-hidden"
+          >
+            <div class="relative aspect-[16/11] overflow-hidden bg-ink-200">
+              <CarMedia
+                car={heroD}
+                eager={true}
+                class="transition-transform duration-700 group-hover:scale-105"
+              />
+              <div class="absolute top-4 left-4">
+                <span
+                  class="inline-flex items-center gap-1.5 rounded-md bg-accent text-white px-3 py-1.5 text-xs font-display font-semibold tracking-wide"
+                >
+                  <Icon name="sparkles" size={13} /> Featured
+                </span>
+              </div>
+            </div>
+            <div class="p-5 md:p-6 flex items-center justify-between gap-4">
+              <div class="min-w-0">
+                <p class="text-xs text-fog">{heroD.year}</p>
+                <h2 class="font-display text-xl font-semibold text-snow mt-0.5">
+                  {carTitle(heroD)}
+                </h2>
+                <p class="text-sm text-fog mt-0.5 truncate">{heroD.variant}</p>
+              </div>
+              <div class="text-right shrink-0">
+                <span class="block font-display text-2xl font-bold text-snow">
+                  {formatPrice(heroD.price)}
+                </span>
+                <span
+                  class="inline-flex items-center gap-1 text-sm text-accent font-display font-semibold mt-1"
+                >
+                  View car <Icon name="arrow-right" size={15} />
+                </span>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-10 lg:mt-14">
+        <p class="eyebrow mb-4">Search our stock</p>
+        <StockSearch />
+      </div>
+    </div>
+  </section>
+
+  {/* ----------------------------------------------------- FEATURED STOCK */}
+  <section class="section border-t border-line">
+    <div class="shell">
+      <div class="flex flex-wrap items-end justify-between gap-6">
+        <SectionHeading eyebrow="In the showroom" title="Featured vehicles">
+          <p class="mt-3 text-mist max-w-md">
+            A selection of what is with us now. The full list updates as cars
+            move.
+          </p>
+        </SectionHeading>
+        <a href="/stock" class="btn btn-outline btn-sm shrink-0">
+          All stock <Icon name="arrow-right" size={15} />
+        </a>
+      </div>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {
+          featured.map((car, i) => (
+            <div class="reveal">
+              <CarCard car={car} eager={i === 0} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ----------------------------------------------------------- SOURCING */}
+  <section class="section bg-ink-100 border-y border-line">
+    <div class="shell">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        <div>
+          <span class="eyebrow">The Overton difference</span>
+          <h2
+            class="mt-5 font-display text-3xl md:text-[2.5rem] font-semibold text-snow leading-[1.1] text-balance"
+          >
+            Cannot see the exact car? We will find it.
+          </h2>
+          <p class="mt-5 text-mist leading-relaxed">
+            Most of what we sell never sits on a forecourt. Tell us the make,
+            model, specification and colour you want, and we locate it through a
+            nationwide network of trusted suppliers, then prepare and deliver it
+            to you.
+          </p>
+          <p class="mt-3 text-mist leading-relaxed">
+            From a specific RS build to a commercial van for your business, the
+            sourcing service works the same way: you describe it, we find it.
+          </p>
+          <a href="/sourcing" class="btn btn-accent mt-7">
+            Start a search <Icon name="arrow-right" size={16} />
+          </a>
+        </div>
+        <ol class="grid gap-4">
+          {
+            sourcingSteps.map((step, i) => (
+              <li class="reveal surface p-5 flex gap-4 items-start">
+                <div class="shrink-0 grid place-items-center w-11 h-11 rounded-lg bg-accent/12 text-accent">
+                  <Icon name={step.icon} size={20} />
+                </div>
+                <div>
+                  <div class="flex items-center gap-2">
+                    <span class="font-display text-xs font-bold text-fog">
+                      0{i + 1}
+                    </span>
+                    <h3 class="font-display text-base font-semibold text-snow">
+                      {step.title}
+                    </h3>
+                  </div>
+                  <p class="mt-1 text-sm text-fog leading-relaxed">
+                    {step.body}
+                  </p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  {/* ----------------------------------------------------------- SERVICES */}
+  <section class="section">
+    <div class="shell">
+      <SectionHeading eyebrow="What we do" title="More than a stock list">
+        <p class="mt-3 text-mist max-w-lg">
+          Everything you need around the car itself, handled in one place.
+        </p>
+      </SectionHeading>
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {
+          services.map((s) => (
+            <a
+              href={s.href}
+              class="group surface p-6 flex flex-col reveal hover:border-line-strong transition-colors"
+            >
+              <div class="grid place-items-center w-11 h-11 rounded-lg bg-ink-200 text-accent">
+                <Icon name={s.icon} size={20} />
+              </div>
+              <h3 class="mt-5 font-display text-lg font-semibold text-snow">
+                {s.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog leading-relaxed flex-1">
+                {s.body}
+              </p>
+              <span class="mt-4 inline-flex items-center gap-1.5 text-sm font-display font-semibold text-snow group-hover:text-accent transition-colors">
+                Learn more
+                <Icon
+                  name="arrow-right"
+                  size={15}
+                  class="transition-transform group-hover:translate-x-0.5"
+                />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* -------------------------------------------------------- WHY OVERTON */}
+  <section class="section bg-ink-100 border-y border-line">
+    <div class="shell">
+      <SectionHeading eyebrow="Why Overton Prestige" title="Bought with confidence" />
+      <div class="mt-10 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        {
+          whyOverton.map((item) => (
+            <div class="reveal flex flex-col">
+              <div class="grid place-items-center w-11 h-11 rounded-lg bg-accent/12 text-accent">
+                <Icon name={item.icon} size={20} />
+              </div>
+              <h3 class="mt-5 font-display text-lg font-semibold text-snow">
+                {item.title}
+              </h3>
+              <p class="mt-2 text-sm text-fog leading-relaxed">{item.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* ------------------------------------------------------------- PROOF */}
+  <section class="section">
+    <div class="shell">
+      <div
+        class="surface p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 md:gap-12 reveal"
+      >
+        <div class="text-center md:text-left shrink-0">
+          <div class="font-display text-6xl font-bold text-snow leading-none">
+            {site.reviews.rating}
+          </div>
+          <div class="mt-2 flex justify-center md:justify-start gap-0.5 text-accent">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" size={16} />)}
+          </div>
+        </div>
+        <div class="hidden md:block w-px self-stretch bg-line"></div>
+        <div class="text-center md:text-left flex-1">
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-snow text-balance">
+            Rated five stars by {site.reviews.total} customers
+          </h2>
+          <p class="mt-2 text-mist">
+            A perfect {site.reviews.rating} average across {site.reviews.googleCount}
+             Google reviews and {site.reviews.autotraderCount} AutoTrader reviews.
+          </p>
+        </div>
+        <a href="/reviews" class="btn btn-outline shrink-0">
+          Read the reviews <Icon name="arrow-right" size={15} />
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {/* --------------------------------------------------------- VISIT CTA */}
+  <section class="section pt-0">
+    <div class="shell">
+      <div
+        class="relative overflow-hidden rounded-2xl border border-line bg-ink-100 p-8 md:p-14"
+      >
+        <div
+          class="pointer-events-none absolute -bottom-32 -left-24 w-[28rem] h-[28rem] rounded-full bg-accent/10 blur-[110px]"
+        >
+        </div>
+        <div
+          class="relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center"
+        >
+          <div>
+            <span class="eyebrow">Come and see us</span>
+            <h2
+              class="mt-5 font-display text-3xl md:text-4xl font-semibold text-snow text-balance"
+            >
+              Visit the showroom in Hilton, Derby
+            </h2>
+            <p class="mt-4 text-mist leading-relaxed max-w-md">
+              Viewings are by appointment, so every visit is unhurried. Call or
+              message us and we will arrange a time that suits you.
+            </p>
+            <div class="mt-7 flex flex-wrap gap-3">
+              <a href={site.phoneHref} class="btn btn-accent">
+                <Icon name="phone" size={16} /> Call {site.phone}
+              </a>
+              <a href={site.whatsappHref} class="btn btn-outline">
+                <Icon name="whatsapp" size={16} /> WhatsApp
+              </a>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div class="surface p-5">
+              <Icon name="pin" size={18} class="text-accent" />
+              <h3 class="mt-3 font-display text-sm font-semibold text-snow">
+                Location
+              </h3>
+              <p class="mt-1 text-sm text-fog leading-relaxed">
+                {site.address.line1}, {site.address.line2}, {site.address.city},
+                {site.address.postcode}
+              </p>
+              <a
+                href={site.mapsHref}
+                target="_blank"
+                rel="noopener"
+                class="mt-2 inline-flex items-center gap-1 text-sm text-accent font-display font-semibold"
+              >
+                Get directions <Icon name="arrow-up-right" size={14} />
+              </a>
+            </div>
+            <div class="surface p-5">
+              <Icon name="clock" size={18} class="text-accent" />
+              <h3 class="mt-3 font-display text-sm font-semibold text-snow">
+                Opening hours
+              </h3>
+              <p class="mt-1 text-sm text-fog leading-relaxed">
+                Mon to Fri, 09:00 to 17:00<br />
+                Saturday, 09:00 to 16:00<br />
+                Sunday, closed
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

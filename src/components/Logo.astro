@@ -1,0 +1,20 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className = '' } = Astro.props;
+---
+
+<a
+  href="/"
+  class:list={['inline-flex items-center', className]}
+  aria-label="Overton Prestige, home"
+>
+  <img
+    src="/logo-white.png"
+    alt="Overton Prestige"
+    width="350"
+    height="182"
+    class="h-12 md:h-14 w-auto"
+  />
+</a>

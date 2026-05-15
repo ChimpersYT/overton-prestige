@@ -1,0 +1,238 @@
+---
+/**
+ * Reusable enquiry form.
+ *  - If site.formEndpoint is set (a Formspree URL), submissions are POSTed there
+ *    and the visitor sees an inline thank-you, no email app needed.
+ *  - If it is empty, the form falls back to opening the visitor's email app
+ *    with everything pre-filled, so it still works with zero setup.
+ */
+import Icon from './Icon.astro';
+import { site } from '../data/site';
+
+interface Field {
+  name: string;
+  label: string;
+  type?: 'text' | 'tel' | 'email' | 'select' | 'textarea';
+  required?: boolean;
+  placeholder?: string;
+  options?: string[];
+  full?: boolean;
+}
+interface Props {
+  subject: string;
+  fields: Field[];
+  submitLabel?: string;
+  id?: string;
+}
+const {
+  subject,
+  fields,
+  submitLabel = 'Send enquiry',
+  id = 'enquiry-form',
+} = Astro.props;
+
+const endpoint = site.formEndpoint;
+---
+
+<div class="enquiry-wrap">
+  <form
+    id={id}
+    class="enquiry-form grid sm:grid-cols-2 gap-4"
+    data-subject={subject}
+    data-email={site.email}
+    data-endpoint={endpoint}
+    data-phone={site.phone}
+    action={endpoint || undefined}
+    method="post"
+    novalidate
+  >
+    {/* Formspree helpers: email subject + spam honeypot */}
+    <input type="hidden" name="_subject" value={subject} />
+    <input
+      type="text"
+      name="_gotcha"
+      tabindex="-1"
+      autocomplete="off"
+      class="hidden"
+      aria-hidden="true"
+    />
+
+    {
+      fields.map((f) => (
+        <div
+          class:list={[f.full || f.type === 'textarea' ? 'sm:col-span-2' : '']}
+        >
+          <label class="field-label" for={`${id}-${f.name}`}>
+            {f.label}
+            {f.required && <span class="text-accent"> *</span>}
+          </label>
+          {f.type === 'select' ? (
+            <select
+              id={`${id}-${f.name}`}
+              name={f.name}
+              class="field"
+              data-label={f.label}
+              required={f.required}
+            >
+              <option value="">{f.placeholder ?? 'Please choose'}</option>
+              {f.options?.map((o) => <option value={o}>{o}</option>)}
+            </select>
+          ) : f.type === 'textarea' ? (
+            <textarea
+              id={`${id}-${f.name}`}
+              name={f.name}
+              class="field min-h-[130px] resize-y"
+              data-label={f.label}
+              placeholder={f.placeholder}
+              required={f.required}
+            />
+          ) : (
+            <input
+              id={`${id}-${f.name}`}
+              name={f.name}
+              type={f.type ?? 'text'}
+              class="field"
+              data-label={f.label}
+              placeholder={f.placeholder}
+              required={f.required}
+            />
+          )}
+        </div>
+      ))
+    }
+    <div
+      class="sm:col-span-2 flex flex-col sm:flex-row sm:items-center gap-3 mt-1"
+    >
+      <button type="submit" class="btn btn-accent shrink-0">
+        <span class="btn-label">{submitLabel}</span>
+        <Icon name="arrow-right" size={16} />
+      </button>
+      <p class="form-note text-xs text-fog">
+        {
+          endpoint
+            ? `We aim to reply the same day. Prefer to talk? Call ${site.phone}.`
+            : `Opens in your email app, pre-filled and ready to send. Prefer to talk? Call ${site.phone}.`
+        }
+      </p>
+    </div>
+  </form>
+
+  <div class="enquiry-success surface p-8 text-center" hidden>
+    <div
+      class="grid place-items-center w-12 h-12 mx-auto rounded-full bg-accent/12 text-accent"
+    >
+      <Icon name="check" size={24} />
+    </div>
+    <h3 class="mt-4 font-display text-xl font-semibold text-snow">
+      Thank you, your enquiry is on its way
+    </h3>
+    <p class="mt-2 text-mist">
+      We have your details and will be in touch shortly. For anything urgent,
+      call {site.phone}.
+    </p>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLDivElement>('.enquiry-wrap').forEach((wrap) => {
+    const form = wrap.querySelector<HTMLFormElement>('.enquiry-form');
+    const success = wrap.querySelector<HTMLElement>('.enquiry-success');
+    if (!form) return;
+
+    const controls = () =>
+      form.querySelectorAll<
+        HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+      >('[data-label]');
+
+    const validate = () => {
+      let firstInvalid: HTMLElement | null = null;
+      for (const el of controls()) {
+        const invalid = el.required && !el.value.trim();
+        el.classList.toggle('field-error', invalid);
+        if (invalid && !firstInvalid) firstInvalid = el;
+      }
+      if (firstInvalid) {
+        firstInvalid.focus();
+        firstInvalid.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        return false;
+      }
+      return true;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!validate()) return;
+
+      const endpoint = form.dataset.endpoint;
+
+      // No form service configured: fall back to a pre-filled email.
+      if (!endpoint) {
+        const email = form.dataset.email ?? '';
+        const subject = form.dataset.subject ?? 'Website enquiry';
+        const lines: string[] = [];
+        for (const el of controls()) {
+          const value = el.value.trim();
+          if (value) lines.push(`${el.dataset.label ?? el.name}: ${value}`);
+        }
+        lines.push('', 'Sent from the Overton Prestige website.');
+        window.location.href =
+          `mailto:${email}` +
+          `?subject=${encodeURIComponent(subject)}` +
+          `&body=${encodeURIComponent(lines.join('\n'))}`;
+        return;
+      }
+
+      // Formspree: POST in the background, show an inline thank-you.
+      const btn = form.querySelector<HTMLButtonElement>(
+        'button[type="submit"]',
+      );
+      const label = btn?.querySelector<HTMLElement>('.btn-label');
+      const originalLabel = label?.textContent ?? '';
+      if (btn) btn.disabled = true;
+      if (label) label.textContent = 'Sending...';
+
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          form.hidden = true;
+          if (success) {
+            success.hidden = false;
+            success.scrollIntoView({ block: 'center', behavior: 'smooth' });
+          }
+          return;
+        }
+        throw new Error('Bad response');
+      } catch {
+        const note = form.querySelector<HTMLElement>('.form-note');
+        if (note) {
+          note.textContent =
+            'Something went wrong sending that. Please call ' +
+            (form.dataset.phone ?? 'us') +
+            ' or email us directly.';
+          note.classList.add('text-accent');
+          note.classList.remove('text-fog');
+        }
+      } finally {
+        if (btn) btn.disabled = false;
+        if (label) label.textContent = originalLabel;
+      }
+    });
+
+    form.addEventListener('input', (e) => {
+      const t = e.target as HTMLElement;
+      if (t?.classList.contains('field-error')) {
+        t.classList.remove('field-error');
+      }
+    });
+  });
+</script>
+
+<style>
+  .enquiry-form :global(.field-error) {
+    border-color: var(--color-accent);
+  }
+</style>

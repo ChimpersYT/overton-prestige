@@ -1,0 +1,117 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import CarMedia from './CarMedia.astro';
+import Icon from './Icon.astro';
+import {
+  formatPrice,
+  priceQualifierLabel,
+  formatMileage,
+  carTitle,
+} from '../lib/format';
+
+interface Props {
+  car: CollectionEntry<'cars'>;
+  eager?: boolean;
+}
+const { car, eager = false } = Astro.props;
+const d = car.data;
+const href = `/stock/${car.id}`;
+const isSourcing = d.status === 'sourcing';
+const isSold = d.status === 'sold';
+const qualifier = priceQualifierLabel(d.priceQualifier);
+---
+
+<a
+  href={href}
+  class:list={[
+    'car-card group surface overflow-hidden flex flex-col',
+    isSold && 'opacity-60',
+  ]}
+>
+  <div class="relative aspect-[16/10] overflow-hidden bg-ink-200">
+    <CarMedia
+      car={d}
+      eager={eager}
+      class="transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+    />
+    <div class="absolute inset-x-0 top-0 p-3 flex items-start justify-between gap-2">
+      {
+        d.badge && (
+          <span class="inline-flex items-center rounded-md bg-ink/80 backdrop-blur px-2.5 py-1 text-[0.66rem] font-display font-semibold tracking-wide text-snow border border-line">
+            {d.badge}
+          </span>
+        )
+      }
+      <span
+        class:list={[
+          'ml-auto inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-[0.66rem] font-display font-semibold tracking-wide border whitespace-nowrap',
+          isSourcing
+            ? 'bg-ink/80 backdrop-blur text-mist border-line'
+            : isSold
+              ? 'bg-ink/80 text-fog border-line'
+              : 'bg-accent text-white border-accent',
+        ]}
+      >
+        {
+          !isSourcing && !isSold && (
+            <span class="w-1.5 h-1.5 rounded-full bg-white" />
+          )
+        }
+        {isSourcing ? 'Source to order' : isSold ? 'Sold' : 'In stock'}
+      </span>
+    </div>
+  </div>
+
+  <div class="flex flex-col flex-1 p-5">
+    <div class="flex items-baseline justify-between gap-3">
+      <h3 class="font-display text-lg font-semibold text-snow leading-tight">
+        {carTitle(d)}
+      </h3>
+      <span class="text-xs text-fog whitespace-nowrap">{d.year}</span>
+    </div>
+    <p class="mt-1 text-sm text-fog leading-snug line-clamp-2">{d.variant}</p>
+
+    <div class="mt-4 flex flex-wrap gap-1.5">
+      <span class="chip"><Icon name="gauge" size={13} />{formatMileage(d.mileage)}</span>
+      <span class="chip"><Icon name="cog" size={13} />{d.transmission}</span>
+      <span class="chip"><Icon name="fuel" size={13} />{d.fuel}</span>
+    </div>
+
+    <div
+      class="mt-5 pt-4 border-t border-line flex items-center justify-between gap-3"
+    >
+      <div class="leading-none">
+        <span class="block font-display text-xl font-bold text-snow">
+          {formatPrice(d.price)}
+        </span>
+        {
+          qualifier && (
+            <span class="text-[0.7rem] text-fog">{qualifier}</span>
+          )
+        }
+      </div>
+      <span
+        class="inline-flex items-center gap-1.5 text-sm font-display font-semibold text-snow group-hover:text-accent transition-colors"
+      >
+        View
+        <Icon
+          name="arrow-right"
+          size={16}
+          class="transition-transform group-hover:translate-x-0.5"
+        />
+      </span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .car-card {
+    transition:
+      border-color 0.25s ease,
+      transform 0.25s ease;
+  }
+  .car-card:hover {
+    border-color: var(--color-line-strong);
+    transform: translateY(-3px);
+  }
+</style>

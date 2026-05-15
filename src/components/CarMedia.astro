@@ -1,0 +1,114 @@
+---
+import type { CarData } from '../lib/format';
+
+interface Props {
+  car: CarData;
+  class?: string;
+  eager?: boolean;
+}
+const { car, class: className = '', eager = false } = Astro.props;
+
+const hasImage = car.images.length > 0;
+const src = hasImage ? car.images[0] : null;
+const alt = `${car.make} ${car.model} ${car.variant}`;
+---
+
+{
+  hasImage ? (
+    <img
+      src={src}
+      alt={alt}
+      loading={eager ? 'eager' : 'lazy'}
+      decoding="async"
+      class:list={['w-full h-full object-cover', className]}
+    />
+  ) : (
+    <div
+      class:list={['car-placeholder', className]}
+      role="img"
+      aria-label={alt}
+    >
+      <span class="cp-make">{car.make}</span>
+      <span class="cp-model">{car.model}</span>
+      <span class="cp-body">{car.bodyType}</span>
+    </div>
+  )
+}
+
+<style>
+  .car-placeholder {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem;
+    background:
+      radial-gradient(
+        ellipse 80% 60% at 50% 0%,
+        rgba(255, 255, 255, 0.055),
+        transparent 70%
+      ),
+      linear-gradient(165deg, var(--color-ink-200), var(--color-ink));
+    overflow: hidden;
+  }
+  .car-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      rgba(255, 255, 255, 0.018) 0 2px,
+      transparent 2px 18px
+    );
+  }
+  .car-placeholder::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 2px;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      var(--color-accent),
+      transparent
+    );
+    opacity: 0.5;
+  }
+  .cp-make {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: 0.62rem;
+    font-weight: 600;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--color-fog);
+  }
+  .cp-model {
+    position: relative;
+    font-family: var(--font-display);
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: rgba(255, 255, 255, 0.13);
+    line-height: 1;
+    margin-top: 0.1rem;
+  }
+  .cp-body {
+    position: relative;
+    margin-top: 0.7rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-fog);
+    border: 1px solid var(--color-line);
+    padding: 0.32rem 0.75rem;
+    border-radius: 999px;
+  }
+</style>

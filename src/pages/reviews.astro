@@ -1,0 +1,141 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+import { testimonials } from '../data/testimonials';
+
+const platforms = [
+  {
+    name: 'Google',
+    count: site.reviews.googleCount,
+    href: site.reviews.googleHref,
+  },
+  {
+    name: 'AutoTrader',
+    count: site.reviews.autotraderCount,
+    href: site.reviews.autotraderHref,
+  },
+];
+---
+
+<Layout
+  title="Reviews"
+  description={`Overton Prestige is rated ${site.reviews.rating} from ${site.reviews.total} reviews across Google and AutoTrader.`}
+>
+  <PageHeader
+    eyebrow="Reviews"
+    title={`Rated ${site.reviews.rating} by ${site.reviews.total} customers`}
+    lead="Our reputation is built one car at a time. Every review is on Google and AutoTrader, verified and unedited."
+  />
+
+  <section class="section">
+    <div class="shell">
+      <div class="grid md:grid-cols-3 gap-5">
+        <div
+          class="surface p-8 flex flex-col items-center text-center justify-center"
+        >
+          <div class="font-display text-6xl font-bold text-snow leading-none">
+            {site.reviews.rating}
+          </div>
+          <div class="mt-3 flex gap-0.5 text-accent">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" size={18} />)}
+          </div>
+          <p class="mt-3 text-sm text-fog">Average rating</p>
+        </div>
+        {
+          platforms.map((p) => (
+            <a
+              href={p.href}
+              target="_blank"
+              rel="noopener"
+              class="group surface p-8 flex flex-col items-center text-center justify-center hover:border-line-strong transition-colors"
+            >
+              <div class="font-display text-6xl font-bold text-snow leading-none">
+                {p.count}
+              </div>
+              <p class="mt-3 text-sm text-mist">{p.name} reviews</p>
+              <span class="mt-3 inline-flex items-center gap-1.5 text-sm font-display font-semibold text-snow group-hover:text-accent transition-colors">
+                Read on {p.name}
+                <Icon name="arrow-up-right" size={14} />
+              </span>
+            </a>
+          ))
+        }
+      </div>
+
+      {
+        testimonials.length > 0 ? (
+          <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {testimonials.map((t) => (
+              <figure class="surface p-6 flex flex-col reveal">
+                <Icon name="quote" size={22} class="text-accent" />
+                <blockquote class="mt-4 text-mist leading-relaxed flex-1">
+                  {t.quote}
+                </blockquote>
+                <figcaption class="mt-5 pt-4 border-t border-line flex items-center justify-between">
+                  <span class="text-sm font-display font-semibold text-snow">
+                    {t.author}
+                  </span>
+                  <span class="text-xs text-fog">via {t.source}</span>
+                </figcaption>
+              </figure>
+            ))}
+          </div>
+        ) : (
+          <div class="mt-6 surface p-8 md:p-14 text-center flex flex-col items-center">
+            <div class="grid place-items-center w-12 h-12 rounded-full bg-accent/12 text-accent">
+              <Icon name="quote" size={22} />
+            </div>
+            <h2 class="mt-5 font-display text-2xl font-semibold text-snow text-balance">
+              Read what our customers say
+            </h2>
+            <p class="mt-2 text-mist max-w-md">
+              Every Overton Prestige review sits on Google and AutoTrader, where
+              it is verified and cannot be edited by us. Have a look for
+              yourself.
+            </p>
+            <div class="mt-6 flex flex-wrap justify-center gap-3">
+              {platforms.map((p) => (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noopener"
+                  class="btn btn-outline btn-sm"
+                >
+                  {p.name} reviews <Icon name="arrow-up-right" size={14} />
+                </a>
+              ))}
+            </div>
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div
+        class="surface p-8 md:p-12 flex flex-col md:flex-row items-center gap-8 text-center md:text-left"
+      >
+        <div class="flex-1">
+          <h2 class="font-display text-2xl md:text-3xl font-semibold text-snow text-balance">
+            Bought a car from us?
+          </h2>
+          <p class="mt-2 text-mist">
+            We would genuinely appreciate a review. It helps the next buyer, and
+            it helps us.
+          </p>
+        </div>
+        <a
+          href={site.reviews.googleHref}
+          target="_blank"
+          rel="noopener"
+          class="btn btn-accent shrink-0"
+        >
+          Leave a review <Icon name="arrow-up-right" size={15} />
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>

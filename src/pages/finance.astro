@@ -1,0 +1,169 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHeader from '../components/PageHeader.astro';
+import Icon from '../components/Icon.astro';
+import { site } from '../data/site';
+
+const products = [
+  {
+    name: 'Hire Purchase',
+    abbr: 'HP',
+    body: 'Spread the full cost of the car over a fixed term with a deposit and equal monthly payments. Once the final payment is made, the car is yours outright.',
+    points: [
+      'You own the car at the end of the term',
+      'Fixed, predictable monthly payments',
+      'Choose the deposit and term that suit you',
+    ],
+  },
+  {
+    name: 'Personal Contract Purchase',
+    abbr: 'PCP',
+    body: 'Lower monthly payments with a larger optional final payment at the end. When the term finishes you can pay it and keep the car, part-exchange, or hand it back.',
+    points: [
+      'Lower monthly payments than Hire Purchase',
+      'Flexibility at the end of the agreement',
+      'Annual mileage agreed up front',
+    ],
+  },
+];
+
+const steps = [
+  {
+    title: 'Choose your car',
+    body: 'Pick from our current stock, or have us source the exact one you want.',
+  },
+  {
+    title: 'We submit your details',
+    body: 'We introduce you to our panel of lenders to find a suitable option.',
+  },
+  {
+    title: 'A decision in writing',
+    body: 'You receive the figures and terms clearly, with no obligation to proceed.',
+  },
+  {
+    title: 'Drive away',
+    body: 'Once you are happy and everything is signed, the car is yours.',
+  },
+];
+---
+
+<Layout
+  title="Finance"
+  description="Hire Purchase and PCP finance on prestige and performance cars from Overton Prestige in Derby. Subject to status, no obligation."
+>
+  <PageHeader
+    eyebrow="Finance"
+    title="Finance options, explained simply"
+    lead="Most of our vehicles can be bought on finance. We keep it straightforward, talk you through the options in plain English, and there is never any pressure to proceed."
+  />
+
+  <section class="section">
+    <div class="shell">
+      <div class="grid md:grid-cols-2 gap-5">
+        {
+          products.map((p) => (
+            <div class="surface p-7 md:p-8 reveal flex flex-col">
+              <div class="flex items-center gap-3">
+                <span class="grid place-items-center w-12 h-12 rounded-lg bg-accent/12 text-accent font-display font-bold">
+                  {p.abbr}
+                </span>
+                <h2 class="font-display text-xl font-semibold text-snow">
+                  {p.name}
+                </h2>
+              </div>
+              <p class="mt-5 text-mist leading-relaxed">{p.body}</p>
+              <ul class="mt-5 flex flex-col gap-2.5">
+                {p.points.map((pt) => (
+                  <li class="flex items-start gap-2.5 text-sm text-mist">
+                    <Icon
+                      name="check"
+                      size={16}
+                      class="text-accent shrink-0 mt-0.5"
+                    />
+                    {pt}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div class="surface p-8 md:p-10">
+        <span class="eyebrow">How it works</span>
+        <h2
+          class="mt-4 font-display text-2xl md:text-3xl font-semibold text-snow"
+        >
+          Four simple steps
+        </h2>
+        <ol class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {
+            steps.map((step, i) => (
+              <li>
+                <span class="font-display text-3xl font-bold text-ink-300">
+                  0{i + 1}
+                </span>
+                <h3 class="mt-2 font-display text-base font-semibold text-snow">
+                  {step.title}
+                </h3>
+                <p class="mt-1.5 text-sm text-fog leading-relaxed">
+                  {step.body}
+                </p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pt-0">
+    <div class="shell">
+      <div class="grid lg:grid-cols-[1.4fr_1fr] gap-6">
+        <div class="surface p-8 md:p-10">
+          <span class="eyebrow">Good to know</span>
+          <h2
+            class="mt-4 font-display text-2xl font-semibold text-snow text-balance"
+          >
+            Honest, no-obligation guidance
+          </h2>
+          <p class="mt-4 text-mist leading-relaxed">
+            Finance is subject to status, affordability and a credit check.
+            Every figure and term is confirmed to you in writing before anything
+            is agreed, and you are free to walk away at any point. We would
+            rather you were comfortable than committed.
+          </p>
+          <p class="mt-3 text-mist leading-relaxed">
+            Speak to us about your situation and we will tell you honestly what
+            is realistic.
+          </p>
+        </div>
+        <div
+          class="surface p-8 md:p-10 flex flex-col justify-center bg-ink-100"
+        >
+          <h3 class="font-display text-lg font-semibold text-snow">
+            Talk to us about finance
+          </h3>
+          <p class="mt-2 text-sm text-fog">
+            No application forms online. Just a straightforward conversation.
+          </p>
+          <div class="mt-5 flex flex-col gap-2.5">
+            <a href={site.phoneHref} class="btn btn-accent w-full">
+              <Icon name="phone" size={16} /> Call {site.phone}
+            </a>
+            <a
+              href={`mailto:${site.email}?subject=${encodeURIComponent('Finance enquiry')}`}
+              class="btn btn-outline w-full"
+            >
+              <Icon name="mail" size={16} /> Email us
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

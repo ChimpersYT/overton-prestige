@@ -1,0 +1,17 @@
+{
+  "make": "Audi",
+  "model": "RS5",
+  "variant": "Sportback (New Model)",
+  "year": "2026 (26 plate)",
+  "price": 89990,
+  "priceQualifier": "none",
+  "bodyType": "Hatchback",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,900 cc",
+  "ulez": false,
+  "status": "available",
+  "description": "The new-model RS5 Sportback, presented in excellent order and ready to drive away. A rapid, comfortable five-door that works as well on the daily commute as it does on a weekend run. Contact us for the full specification.",
+  "images": ["/cars/audi-rs5-sportback/3.png"]
+}

@@ -1,0 +1,23 @@
+{
+  "make": "Audi",
+  "model": "SQ5",
+  "variant": "3.0 TFSI S Edition 1 Sportback S Tronic Quattro",
+  "year": "2026 (75 plate)",
+  "price": 73500,
+  "priceQualifier": "none",
+  "bodyType": "SUV",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,995 cc",
+  "ulez": true,
+  "status": "available",
+  "badge": "Just arrived",
+  "description": "Just arrived. The SQ5 Sportback in S Edition 1 specification, a sharp, quick and beautifully built performance SUV. Ready for immediate viewing and available with finance. Contact us for more detail.",
+  "images": [
+    "/cars/audi-sq5-s-edition/1.jpg",
+    "/cars/audi-sq5-s-edition/2.jpg",
+    "/cars/audi-sq5-s-edition/3.jpg",
+    "/cars/audi-sq5-s-edition/4.jpg"
+  ]
+}

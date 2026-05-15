@@ -1,0 +1,22 @@
+{
+  "make": "Audi",
+  "model": "RS3",
+  "variant": "Saloon Carbon Vorsprung",
+  "year": "2026 (26 plate)",
+  "price": 68000,
+  "priceQualifier": "inc-vat",
+  "bodyType": "Saloon",
+  "fuel": "Petrol",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,480 cc",
+  "ulez": false,
+  "status": "available",
+  "description": "The RS3 Saloon in Carbon Vorsprung trim, the four-door take on Audi's five-cylinder icon. Beautifully specified and available now. Get in touch to arrange a viewing.",
+  "images": [
+    "/cars/audi-rs3-saloon-carbon/1.jpg",
+    "/cars/audi-rs3-saloon-carbon/2.jpg",
+    "/cars/audi-rs3-saloon-carbon/3.jpg",
+    "/cars/audi-rs3-saloon-carbon/4.jpg"
+  ]
+}

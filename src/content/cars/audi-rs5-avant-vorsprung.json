@@ -1,0 +1,21 @@
+{
+  "make": "Audi",
+  "model": "RS5",
+  "variant": "Avant Performance Vorsprung",
+  "year": "2026 (26 plate)",
+  "price": 107470,
+  "priceQualifier": "inc-vat",
+  "bodyType": "Estate",
+  "fuel": "Petrol Hybrid",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "ulez": false,
+  "status": "available",
+  "description": "The latest RS5 Avant in top Performance Vorsprung trim, combining everyday estate practicality with genuine RS pace. Finished to a high specification and available now. Get in touch to arrange a viewing or to discuss finance.",
+  "images": [
+    "/cars/audi-rs5-avant-vorsprung/1.png",
+    "/cars/audi-rs5-avant-vorsprung/2.png",
+    "/cars/audi-rs5-avant-vorsprung/3.png",
+    "/cars/audi-rs5-avant-vorsprung/4.png"
+  ]
+}

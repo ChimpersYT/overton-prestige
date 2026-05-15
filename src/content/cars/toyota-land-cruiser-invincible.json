@@ -1,0 +1,23 @@
+{
+  "make": "Toyota",
+  "model": "Land Cruiser",
+  "variant": "2.8D Invincible Auto 4WD (LWB)",
+  "year": "2026 (75 plate)",
+  "price": 70800,
+  "priceQualifier": "none",
+  "bodyType": "SUV",
+  "fuel": "Diesel",
+  "transmission": "Automatic",
+  "mileage": 20,
+  "engineSize": "2,755 cc",
+  "ulez": true,
+  "status": "available",
+  "badge": "Commercial, VAT Q, towbar",
+  "description": "The all-new Toyota Land Cruiser in top Invincible trim, long-wheelbase, supplied as a commercial with VAT qualifying status and a towbar fitted. Genuine go-anywhere capability with serious towing power. Available now.",
+  "images": [
+    "/cars/toyota-land-cruiser-invincible/1.jpg",
+    "/cars/toyota-land-cruiser-invincible/2.jpg",
+    "/cars/toyota-land-cruiser-invincible/3.jpg",
+    "/cars/toyota-land-cruiser-invincible/4.jpg"
+  ]
+}
