@@ -89,6 +89,53 @@ const jsonLd = {
     </main>
     <Footer />
 
+    <div
+      id="cursor-dot"
+      class="pointer-events-none fixed top-0 left-0 z-[9999] w-4 h-4 rounded-full opacity-0"
+      style="background:#e11d2a;mix-blend-mode:difference;transform:translate3d(-100px,-100px,0);will-change:transform;transition:opacity 0.2s ease"
+      aria-hidden="true"
+    >
+    </div>
+
+    <script is:inline>
+      (function () {
+        const dot = document.getElementById('cursor-dot');
+        if (!dot) return;
+        if (!window.matchMedia('(pointer: fine)').matches) return;
+
+        let targetX = -100;
+        let targetY = -100;
+        let currentX = -100;
+        let currentY = -100;
+        let visible = false;
+
+        window.addEventListener('mousemove', (e) => {
+          targetX = e.clientX - 8;
+          targetY = e.clientY - 8;
+          if (!visible) {
+            visible = true;
+            dot.style.opacity = '1';
+          }
+        });
+
+        window.addEventListener('mouseout', (e) => {
+          if (!e.relatedTarget) {
+            visible = false;
+            dot.style.opacity = '0';
+          }
+        });
+
+        function render() {
+          currentX += (targetX - currentX) * 0.22;
+          currentY += (targetY - currentY) * 0.22;
+          dot.style.transform =
+            'translate3d(' + currentX + 'px, ' + currentY + 'px, 0)';
+          requestAnimationFrame(render);
+        }
+        requestAnimationFrame(render);
+      })();
+    </script>
+
     <script>
       // Reveal-on-scroll progressive enhancement.
       const els = document.querySelectorAll('.reveal');
