@@ -185,9 +185,9 @@ else needs changing.
 
 These need a human decision, they are flagged so nothing slips:
 
-- [ ] **Confirm who owns the `overtonprestige.co.uk` domain.** If Car Dealer 5
-      registered it, get it transferred to the business before cancelling them.
-      This is the single most important thing to check.
+- [x] **Domain ownership confirmed.** `overtonprestige.co.uk` is owned by the
+      business directly (confirmed 2026-05-15). Safe to cancel Car Dealer 5
+      whenever ready, and to repoint DNS at the new host.
 - [ ] **Check the Car Dealer 5 contract** for any minimum term or notice period.
 - [ ] **Map old URLs to new ones** (301 redirects) so Google traffic is not lost.
       Cloudflare Pages handles redirects via a `_redirects` file.
